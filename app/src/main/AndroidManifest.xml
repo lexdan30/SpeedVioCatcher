@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.administrator.speedviocatcher">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+   <!-- <uses-permission android:name="android.permission.REAL_GET_TASKS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />-->
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/svclogo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:manageSpaceActivity=".ActivityOfMyChoice">
+
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:exported="true"
+            android:name=".Splashscreen"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar2">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity android:name=".Login"
+            android:theme="@style/AppTheme.NoActionBar2"/>
+        <activity android:name=".NavigationActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
+            <intent-filter> <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+                            <action android:name="android.bluetooth.device.action.ACL_DISCONNECT_REQUESTED" />
+                            <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Registration"
+            android:theme="@style/AppTheme.NoActionBar2"/>
+        <!--<activity android:name=".ProfileActivity" />-->
+        <activity android:name=".CardViewActivity" />
+        <activity android:name=".SettledViolationActivity" />
+        <activity android:name=".MapView" />
+
+        <!--<activity android:name=".MyApplication"
+            android:clearTaskOnLaunch="true"/>-->
+        <activity android:name=".SpeedOfflineMonitoring" />
+       <!-- <activity android:name=".ReadArduino" />-->
+        <activity
+            android:name=".ScanningDevice"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".SelectVehicle"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+        <!--<activity
+            android:name=".SpeedOfflineMonitoring"
+            android:theme="@style/Theme.AppCompat.Translucent" >
+        </activity>-->
+
+       <!--  <receiver android:name="(package name).BluetoothReceiver" >
+       <intent-filter>
+           <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+           <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+       </intent-filter>
+   </receiver>
+-->
+       <!-- <service android:name="com.example.administrator.speedviocatcher.PersistService"
+            android:enabled="true"/>-->
+        <!--<service
+            android:name="com.example.administrator.speedviocatcher.OverlayShowingService"
+            android:exported="false" />-->
+    </application>
+    <uses-permission android:name="android.permission.TYPE_SYSTEM_OVERLAY" />
+
+</manifest>

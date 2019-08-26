@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mapview"
+    android:background="#151516">
+
+
+    <RelativeLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main_content"
+    tools:ignore="ObsoleteLayoutParam,UselessParent"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true">
+
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="5dp"
+            android:text=""
+            android:elevation="2dp"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:textColor="#2BE973"
+            android:layout_marginRight="10dp"
+            android:textSize="200dp"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/recenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:fabSize="normal"
+            android:scaleType="center"
+            app:useCompatPadding="true"
+            android:layout_gravity="top|end"
+            app:layout_anchor="@+id/restriction"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/center2"
+            app:layout_anchorGravity="top|end"
+            />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/explore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="#0EA7E6"
+            app:fabSize="normal"
+            android:scaleType="center"
+            app:useCompatPadding="true"
+            android:layout_gravity="top|end"
+            app:layout_anchor="@+id/restriction"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/finalexplore"
+            app:layout_anchorGravity="top|end"
+            android:layout_marginTop="65dp"
+            />
+        <!--android:layout_margin="12dp"-->
+        <TextView
+            android:id="@+id/restriction"
+            android:layout_width="110dp"
+            android:layout_height="25dp"
+            android:layout_above="@+id/maxlimit"
+            android:layout_marginBottom="5dp"
+            android:text="MAX KPH"
+            android:elevation="2dp"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:textColor="#FF8C00"
+            android:layout_marginRight="10dp"
+            android:textSize="16dp"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+        <Button
+            android:id="@+id/maxlimit"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:layout_above="@+id/footer"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/buttonstyle"
+            android:gravity="center"
+            android:elevation="4dp"
+            android:text="0"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:textColor="#FF8C00"
+            android:layout_alignParentRight="true"
+            android:textSize="30dp"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
+        <TextView
+            android:id="@+id/speedo"
+            android:layout_width="110dp"
+            android:layout_height="25dp"
+            android:layout_above="@+id/btnSpeed"
+            android:layout_marginBottom="5dp"
+            android:text="SPEED KPH"
+            android:elevation="2dp"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:textColor="#FF8C00"
+            android:layout_marginLeft="10dp"
+            android:textSize="16dp"
+            android:gravity="center"
+            android:layout_alignParentLeft="true"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+        <TextView
+            android:id="@+id/connectedTo"
+            android:layout_width="200dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:text="..."
+            android:elevation="2dp"
+            android:textColor="#FF8C00"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:textSize="20dp"
+            android:gravity="left"
+            android:layout_alignParentLeft="true"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+        <Button
+            android:id="@+id/btnSpeed"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:elevation="4dp"
+            android:layout_marginBottom="10dp"
+            android:layout_above="@+id/footer"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/buttonstyle"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="#D14524"
+            android:layout_alignParentLeft="true"
+            android:textSize="40dp"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/counter"
+            android:text="0"
+            android:textColor="#FFFF"
+            android:elevation="20dp"
+            android:textStyle="bold"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/notifcounter"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp" />
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="577dp"/>
+        <TextView
+            android:id="@+id/loading"
+            android:layout_width="110dp"
+            android:layout_height="25dp"
+            android:layout_above="@+id/progressBar"
+            android:text="loading..."
+            android:elevation="2dp"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:textColor="#FF8C00"
+            android:textSize="16dp"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:visibility="gone"/>
+
+    <!-- FOOTER NAVIGATION -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:elevation="4dp"
+        android:layout_above="@+id/footer_border"
+        android:background="@drawable/shadow"
+        tools:ignore="ObsoleteLayoutParam" />
+        <LinearLayout
+            android:id="@+id/footer_border"
+            android:background="#26497f"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_above="@+id/footer"
+            tools:ignore="ObsoleteLayoutParam,Orientation" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:background="@drawable/side_nav_bar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:elevation="4dp"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/footer"
+            tools:ignore="DisableBaselineAlignment,ObsoleteLayoutParam">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_width="90dp"
+                android:layout_weight="0"
+                android:id="@+id/tab1"
+                tools:ignore="RtlHardcoded">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:src="@drawable/svclogo"
+                    android:layout_width="50dp"
+                    app:civ_border_color="#ffffff"
+                    app:civ_border_width="3dp"
+                    android:layout_weight="2"
+                    android:elevation="18dp"
+                    android:id="@+id/profilepic"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/round_image"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_width="200dp"
+                android:layout_weight="0"
+                android:id="@+id/tab0"
+                tools:ignore="RtlHardcoded">
+
+                <TextView
+                    android:gravity="left|center_vertical"
+                    android:id="@+id/profilename"
+                    android:layout_weight="1"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    android:layout_height="0dp"
+                    android:layout_width="match_parent"
+                    android:text="Welcome.."
+                    tools:ignore="HardcodedText,SpUsage" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:id="@+id/tab4">
+                <ImageButton
+                    android:id="@+id/tab4_icon"
+                    android:layout_weight="2"
+                    android:layout_width="50dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/emails"
+                    android:background="@drawable/round_image"
+                    android:clickable="true"
+                    android:elevation="18dp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="sans-serif-light"
+                    tools:ignore="ContentDescription,NestedWeights" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+</RelativeLayout>
+
+</LinearLayout>
+
+<!---->

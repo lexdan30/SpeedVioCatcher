@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3598dc">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff">
+
+        <TextView
+            android:id="@+id/scan_state"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="#26497f"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:padding="15dip"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="serif" />
+
+        <ListView
+            android:id="@+id/scan_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/scan_state"
+            android:background="?attr/selectableItemBackground"
+            android:layout_alignParentStart="true" />
+
+        <!--<Button
+            android:id="@+id/scan_scan_again"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ScanningDevice again"
+            android:textColor="#FFFFFF"
+            android:background="#FF7D5A"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:elevation="4dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/scan_state" />-->
+
+
+        </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/scan_progress"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="15dip"
+        android:gravity="center"
+        android:scaleX="1.8"
+        android:scaleY="1.8"
+        android:elevation="4dp"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="#26497F"
+        />
+    <Button
+        android:id="@+id/scan_scan_again"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SCAN AGAIN"
+        android:layout_alignParentStart="true"
+        android:textColor="#FFFFFF"
+        android:background="#26497f"
+        android:layout_alignParentBottom="true"
+        android:typeface="serif"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="20dp"
+
+        android:elevation="10dp"/>
+</RelativeLayout>
+
+    <!--android:background="@drawable/button"-->

@@ -1,0 +1,109 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#ABDAF5"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".SelectVehicle">
+
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="SELECT VEHICLE TO USE"
+        android:textColor="#26497F"
+        android:typeface="serif"
+        android:textStyle="bold"
+        android:paddingLeft="10dip"
+        android:textSize="30sp"/>
+
+    <!--<TextView
+        android:id="@+id/info"
+        android:textSize="15sp"
+        android:paddingLeft="10dip"
+        android:paddingBottom="5dip"
+        android:textColor="#ffff"
+        android:textStyle="bold"
+        android:text="You must be paired with your vehicle to see it in the list. Pull to refresh the list."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"/>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:layout_below="@+id/text"
+        android:id="@+id/info">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/name"
+            android:text="UNKNOWN"
+            android:textColor="#26497F"
+            android:elevation="20dp"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="140dp"
+            android:background="@drawable/anim_acct"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="65dp" />
+
+        <ImageView
+            android:id="@+id/imageHway"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_alignBottom="@+id/name"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/hway"
+            tools:ignore="ContentDescription" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:src="@drawable/svclogo"
+            android:layout_width="72dp"
+            app:civ_border_color="#ffffff"
+            app:civ_border_width="3dp"
+            android:elevation="18dp"
+            android:id="@+id/profilepic"
+            android:layout_marginLeft="120dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/round_image"
+            android:layout_height="72dp"
+            android:layout_marginBottom="24dp" />
+    </RelativeLayout>
+
+    <me.aflak.pulltorefresh.PullToRefresh
+        android:id="@+id/pull_to_refresh"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/info">
+
+        <ListView
+            android:id="@+id/list"
+            android:background="?attr/selectableItemBackground"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        </ListView>
+
+    </me.aflak.pulltorefresh.PullToRefresh>
+
+    <Button
+        android:id="@+id/not_in_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scan Vehicle"
+        android:layout_alignParentStart="true"
+        android:textColor="#FFFFFF"
+        android:background="#26497f"
+        android:layout_alignParentBottom="true"
+        android:typeface="serif"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:elevation="20dp"/>
+
+</RelativeLayout>

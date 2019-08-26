@@ -1,0 +1,578 @@
+package com.example.administrator.speedviocatcher;
+
+/**
+ * Created by Administrator on 12/13/2017.
+ */
+
+        import android.Manifest;
+        import android.app.Activity;
+        import android.app.Dialog;
+        import android.bluetooth.BluetoothAdapter;
+        import android.bluetooth.BluetoothDevice;
+        import android.content.ActivityNotFoundException;
+        import android.content.BroadcastReceiver;
+        import android.content.Context;
+        import android.content.DialogInterface;
+        import android.content.Intent;
+        import android.content.IntentFilter;
+        import android.content.SharedPreferences;
+        import android.content.pm.PackageManager;
+        import android.content.res.Resources;
+        import android.graphics.Color;
+        import android.location.Address;
+        import android.location.Geocoder;
+        import android.location.Location;
+        import android.location.LocationListener;
+        import android.location.LocationManager;
+        import android.net.Uri;
+        import android.os.Handler;
+        import android.provider.Settings;
+        import android.support.design.widget.Snackbar;
+        import android.support.v4.app.ActivityCompat;
+        import android.support.v4.app.FragmentActivity;
+        import android.os.Bundle;
+        import android.support.v7.app.AlertDialog;
+        import android.support.v7.app.AppCompatActivity;
+        import android.text.Html;
+        import android.util.Log;
+        import android.view.Menu;
+        import android.view.MenuInflater;
+        import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.Button;
+        import android.widget.ImageButton;
+        import android.widget.TextView;
+        import android.widget.Toast;
+
+        import com.google.android.gms.maps.CameraUpdate;
+        import com.google.android.gms.maps.CameraUpdateFactory;
+        import com.google.android.gms.maps.GoogleMap;
+        import com.google.android.gms.maps.OnMapReadyCallback;
+        import com.google.android.gms.maps.SupportMapFragment;
+        import com.google.android.gms.maps.UiSettings;
+        import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+        import com.google.android.gms.maps.model.CameraPosition;
+        import com.google.android.gms.maps.model.CircleOptions;
+        import com.google.android.gms.maps.model.LatLng;
+        import com.google.android.gms.maps.model.MapStyleOptions;
+        import com.google.android.gms.maps.model.Marker;
+        import com.google.android.gms.maps.model.MarkerOptions;
+
+        import java.io.IOException;
+        import java.util.List;
+
+        import me.aflak.bluetooth.Bluetooth;
+
+        import static com.example.administrator.speedviocatcher.R.layout.dialog;
+
+public class MapView extends AppCompatActivity implements OnMapReadyCallback{
+    //========================bluetooth
+    private String name;
+    private Bluetooth b;
+    Button blueKph,limit;
+    TextView blueTooth,vehicle;
+    //private Bluetooth.CommunicationCallback mCallback;
+    private boolean registered=false;
+    //========================bluetooth
+    private GoogleMap mMap;
+    double baniladLonglat=38.689653701836896;
+    double baniladLonglat2=-9.177051486847693;
+    //10.345268, 123.907426
+    private static final LatLng THIRTYKPH = new LatLng(10.345268, 123.907426);
+    private Marker paseostr;
+    private static final LatLng SIXTYKPH = new LatLng(baniladLonglat, baniladLonglat2);//10.339012, 123.911545
+    private Marker baniladstr;
+    private static final LatLng FOURTYKPH = new LatLng(10.323275, 123.909172);
+    private Marker mabolostr;
+
+
+
+    //10.327146, 123.981011 aspac
+    private static final LatLng TWENTYKPH = new LatLng(10.327146, 123.981011);
+    private Marker mepszone;
+
+    private LocationManager manager;
+    private LocationListener locationListener;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
+        rFIDs();
+        if (AppStatus.getInstance(this).isOnline(this)) {
+
+            Toast.makeText(getBaseContext(),
+                    "Internet connection available\n (POWERED BY LEXDARK)", Toast.LENGTH_LONG).show();
+            // do your stuff
+            // Get Location Manager and check for GPS & Network location services
+            LocationManager lm = (LocationManager)getSystemService(LOCATION_SERVICE);
+            if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                    !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                // Build the alert dialog
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+                builder.setTitle(Html.fromHtml("<font color='#FF7F27'>Location Services Not Active</font>"));
+
+                builder.setIcon(R.drawable.map7);
+                builder.setMessage("Please enable Location Services and GPS");
+                builder.setPositiveButton(Html.fromHtml("<font color='#FF7F27'>OK</font>"), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // Show location settings when the user acknowledges the alert dialog
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+
+                });
+                Dialog alertDialog = builder.create();
+                alertDialog.setCanceledOnTouchOutside(false);
+                alertDialog.show();
+                //CheckBlueToothState();
+            }
+        }
+        else
+        {
+            Toast.makeText(getBaseContext(),
+                    "No Internet connection available\n(POWERED BY LEXDARK)", Toast.LENGTH_LONG).show();
+        }
+       /* this.getSupportActionBar().setTitle("Map View");*/
+        setTitle("Speed Online Monitoring");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+
+        mapFragment.getMapAsync(this);
+        //get the location service
+        manager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        //request the location update thru location manager
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                //get the latitude and longitude from the location
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                //get the location name from latitude and longitude
+                Geocoder geocoder = new Geocoder(getApplicationContext());
+                try {
+                    List<Address> addresses =
+                            geocoder.getFromLocation(latitude, longitude, 1);
+                    String result = addresses.get(0).getSubLocality() + ":";
+                    result += addresses.get(0).getLocality() + ":";
+                    result += addresses.get(0).getCountryCode();
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    //Marker.remove();
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(result).icon(BitmapDescriptorFactory
+                            .fromResource(R.drawable.memarker)));
+                    //mMap.setMaxZoomPreference(18);
+                    mMap.setMinZoomPreference(4.0f);
+                    mMap.setMaxZoomPreference(14.0f);
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(latLng)
+                            //.zoom(15)
+                            .bearing(90)
+                            .tilt(60)
+                            .build();
+                    CircleOptions circleOptions = new CircleOptions()
+                            .center(latLng)
+                            .radius(500)
+                            .strokeWidth(2)
+                            .strokeColor(Color.BLUE)
+                            .fillColor(Color.parseColor("#500084d3"));
+                    // Supported formats are: #RRGGBB #AARRGGBB
+                    //   #AA is the alpha, or amount of transparency
+
+                    mMap.addCircle(circleOptions);
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    //----------setMapUI();
+                    //=============//mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+                    //mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLng, 0));
+
+
+                    mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                    CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng, 18);
+                    mMap.animateCamera(update);
+
+                    //10.345268, 123.907426
+                    Location paseoLocation = new Location("paseolocation");
+                    paseoLocation.setLatitude(10.345268);
+                    paseoLocation.setLongitude(123.907426);
+                    paseostr = mMap.addMarker(new MarkerOptions()
+                            .position(THIRTYKPH)
+                            .title("30KPH")
+                            .snippet("allowable speed limit")
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.threekph)));
+                    //.icon(BitmapDescriptorFactory.fromResource(R.drawable.lexicon)));
+                    paseostr.setTag(0);
+
+
+                    baniladstr = mMap.addMarker(new MarkerOptions()
+                            .position(SIXTYKPH)
+                            .title("60KPH")
+                            .snippet("allowable speed limit")
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.sixtykph)));
+                    //.icon(BitmapDescriptorFactory.fromResource(R.drawable.lexicon)));
+                    baniladstr.setTag(0);
+
+
+                    Location maboloLocation = new Location("mabololocation");
+                    maboloLocation.setLatitude(10.323275);
+                    maboloLocation.setLongitude(123.909172);
+                    mabolostr = mMap.addMarker(new MarkerOptions()
+                            .position(FOURTYKPH)
+                            .title("40KPH")
+                            .snippet("allowable speed limit")
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.fourtykph)));
+                    //.icon(BitmapDescriptorFactory.fromResource(R.drawable.lexicon)));
+                    mabolostr.setTag(0);
+
+
+                    //mepz10.327146, 123.981011
+                    Location mepzLocation = new Location("mepzlocation");
+                    mepzLocation.setLatitude(10.327146);
+                    mepzLocation.setLongitude(123.981011);
+                    mepszone = mMap.addMarker(new MarkerOptions()
+                            .position(TWENTYKPH)
+                            .title("20KPH")
+                            .snippet("allowable speed limit")
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.twokph)));
+                    //.icon(BitmapDescriptorFactory.fromResource(R.drawable.lexicon)));
+                    mepszone.setTag(0);
+
+                    if (location.distanceTo(paseoLocation) < 500f) {
+                        Toast.makeText(MapView.this, "Max speed is 30KPH", Toast.LENGTH_LONG).show();
+                        limit.setText("30KPH");
+                    } else if (location.distanceTo(mepzLocation) < 500f){
+                        Toast.makeText(MapView.this, "You are in MEPZONE...", Toast.LENGTH_LONG).show();
+                        limit.setText("MEPZONE");
+                    }else{
+                        Toast.makeText(MapView.this, "NONE SPEEDLIMIT ZONE...", Toast.LENGTH_LONG).show();
+                        limit.setText("0KPH");
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+        //========================bluetooth
+        b = new Bluetooth(MapView.this);
+        b.enableBluetooth();
+
+        b.setCommunicationCallback(mCallback);
+
+        int pos = getIntent().getExtras().getInt("pos");
+        name = b.getPairedDevices().get(pos).getName();
+
+        Display("Connecting...");
+        b.connectToDevice(b.getPairedDevices().get(pos));
+
+        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(mReceiver, filter);
+        registered=true;
+        //========================bluetooth
+
+    }
+    //========================bluetooth
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(registered) {
+            unregisterReceiver(mReceiver);
+            registered=false;
+        }
+    }
+    public void Display(final String s){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                //Toast.makeText(Chat.this, s + "\n", Toast.LENGTH_LONG).show();
+
+
+                /*LayoutInflater inflater = getLayoutInflater();
+
+                View layout = inflater.inflate(R.layout.activity_custom, (ViewGroup)findViewById(R.id.root));
+
+                TextView text_toast = (TextView) layout.findViewById(R.id.textView1);
+                text_toast.setText(s + "\n");
+
+                Toast toast = new Toast(getApplicationContext());
+
+                toast.setGravity(Gravity.TOP, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();*/
+
+
+                //=====https://stackoverflow.com/questions/1102891/how-to-check-if-a-string-is-numeric-in-java
+                //======isNumeric
+                if(!android.text.TextUtils.isDigitsOnly(s)) {
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.mapview), s + "\n", Snackbar.LENGTH_LONG);
+                    View sbView = snackbar.getView();
+                    TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.YELLOW);
+                    snackbar.show();//findViewById(android.R.id.content)
+                }else{
+
+                }
+            }
+        });
+    }
+    private Bluetooth.CommunicationCallback mCallback = new Bluetooth.CommunicationCallback() {
+        @Override
+        public void onConnect(BluetoothDevice device) {
+            //Display("Connected to " + device.getName() + " - " + device.getAddress());
+            Display("Vehicle Connected!");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String car="DRIVING: "+name;
+                    vehicle.setText(car);
+                    SharedPreferences wheels = getSharedPreferences("MyApp", MODE_PRIVATE);
+                    wheels.edit().putString("vehicle", name).apply();
+                }
+            });
+        }
+
+        @Override
+        public void onDisconnect(BluetoothDevice device, String message) {
+            Display("Disconnected!");
+            Display("Connecting again...");
+            b.connectToDevice(device);
+        }
+
+        @Override
+        public void onMessage(final String message) {
+            Display(message);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    blueKph.setText(message);
+                }
+            });
+        }
+
+        @Override
+        public void onError(String message) {
+            Display("Error: " + message);
+        }
+
+        @Override
+        public void onConnectError(final BluetoothDevice device, String message) {
+            //Display("Error: " + message + ". Trying again in 3 sec...");
+            Display("Error while connecting" + ". Trying again in 3 sec...");
+            //Display("Trying again in 3 sec...");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            b.connectToDevice(device);
+                        }
+                    }, 2000);
+                }
+            });
+        }
+    };
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                Intent intent1 = new Intent(MapView.this, SelectVehicle.class);
+
+                switch (state) {
+                    case BluetoothAdapter.STATE_OFF:
+                        if(registered) {
+                            unregisterReceiver(mReceiver);
+                            registered=false;
+                        }
+                        startActivity(intent1);
+                        finish();
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_OFF:
+                        if(registered) {
+                            unregisterReceiver(mReceiver);
+                            registered=false;
+                        }
+                        startActivity(intent1);
+                        finish();
+                        break;
+                }
+            }
+        }
+    };
+
+    //========================bluetooth
+    private void setMapUI()
+    {
+        UiSettings mUiSettings=mMap.getUiSettings();
+        mUiSettings.setMyLocationButtonEnabled(true);
+        mUiSettings.setCompassEnabled(true);
+        mUiSettings.setTiltGesturesEnabled(false);
+        mUiSettings.setZoomControlsEnabled(true);
+
+    }
+
+
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        MapStyleOptions style =MapStyleOptions.loadRawResourceStyle(this.getApplicationContext(),R.raw.maps_night);
+        mMap.setMapStyle(style);
+
+        /*cmall=mMap.addMarker(new MarkerOptions()
+                .position(CMALL)
+                .title("CMALL")
+                .snippet("Population: 4,627,300"));
+                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.lexicon)));
+        cmall.setTag(0);*/
+
+
+       /*//add a marker in Sydney and move the camera
+        LatLng myfav = new LatLng(10.3395125, 123.9110532);//(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(myfav).title("My Favorite Mall"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(myfav));
+        //Zooming mode
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        CameraUpdate update=CameraUpdateFactory.newLatLngZoom(myfav, 18);
+        mMap.animateCamera(update);*/
+
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        manager.removeUpdates(locationListener);
+        Log.i("onPause...","paused");
+    }
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        // Setting Alert Dialog Title
+        alertDialogBuilder.setTitle(Html.fromHtml("<font color='#FF7F27'>Confirm Exit..!!!</font>"));
+        // Icon Of Alert Dialog
+        alertDialogBuilder.setIcon(R.drawable.map7);
+        // Setting Alert Dialog Message
+        alertDialogBuilder.setMessage("Are you sure, you want to exit?");
+        alertDialogBuilder.setCancelable(false);
+
+        alertDialogBuilder.setPositiveButton(Html.fromHtml("<font color='#FF7F27'>Yes</font>"), new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                int id= item.getItemId();
+                if(id==android.R.id.home);
+                {
+                    Toast.makeText(MapView.this, "Vehicle Disconnected!\n See you in our next drive!", Toast.LENGTH_LONG).show();
+                    // onBackPressed();
+                    b.removeCommunicationCallback();
+                    b.disconnect();
+                    Intent intent = new Intent(MapView.this, SelectVehicle.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton(Html.fromHtml("<font color='#FF7F27'>No</font>"), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ///Toast.makeText(MainActivity.this,"You clicked over No",Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialogBuilder.setNeutralButton(Html.fromHtml("<font color='#FF7F27'>Cancel</font>"), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Toast.makeText(getApplicationContext(),"You clicked on Cancel",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        try {
+            Resources resources = alertDialog.getContext().getResources();
+            int alertTitleId = resources.getIdentifier("alertTitle", "id", "android");
+            TextView alertTitle = (TextView) alertDialog.getWindow().getDecorView().findViewById(alertTitleId);
+            alertTitle.setTextColor(Color.MAGENTA); // change title text color
+
+            int titleDividerId = resources.getIdentifier("titleDivider", "id", "android");
+            View titleDivider = alertDialog.getWindow().getDecorView().findViewById(titleDividerId);
+            titleDivider.setBackgroundColor(Color.YELLOW); // change divider color
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        Button nbutton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        //Set negative button background
+        //nbutton.setBackgroundColor(Color.MAGENTA);
+        //Set negative button text color
+        nbutton.setTextColor(Color.BLACK);
+        Button pbutton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        //Set positive button background
+        //pbutton.setBackgroundColor(Color.YELLOW);
+        //Set positive button text color
+        pbutton.setTextColor(Color.BLACK);
+        Button cbutton = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+        //Set positive button background
+        //pbutton.setBackgroundColor(Color.YELLOW);
+        //Set positive button text color
+        cbutton.setTextColor(Color.BLACK);
+
+
+
+        return super.onOptionsItemSelected(item);
+    }
+    public void rFIDs(){
+        blueKph = (Button)findViewById(R.id.btnSpeed);
+        blueTooth=(TextView)findViewById(R.id.speedo);
+        vehicle=(TextView)findViewById(R.id.connectedTo);
+        limit=(Button)findViewById(R.id.maxlimit);
+    }
+}

@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="100dp"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/side_nav_bar"
+    android:orientation="vertical"
+    tools:context=".Registration" >
+
+    <TextView
+        android:id="@+id/tx_dia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:textColor="#ffffff"
+        android:text="Do you realy want to exit ?"
+        android:textSize="15dp"
+        android:textStyle="bold">
+    </TextView>
+    <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#26497f"
+    android:layout_gravity="center"
+    android:orientation="horizontal" >
+    
+    <Button
+        android:id="@+id/btn_yes"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:background="#0A1728"
+        android:clickable="true"
+        android:text="Yes"
+		android:textColor="#ffffff"
+        android:textStyle="bold"/>
+    
+    <Button
+        android:id="@+id/btn_no"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:background="#0A1728"
+        android:clickable="true"
+        android:text="No"
+        android:layout_marginLeft="10dp"
+		android:textColor="#ffffff"
+        android:textStyle="bold"/>
+    
+ 	</LinearLayout>   
+</LinearLayout>

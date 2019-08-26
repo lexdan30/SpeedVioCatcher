@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "1043933993150",
+    "firebase_url": "https://viocatcher.firebaseio.com",
+    "project_id": "viocatcher",
+    "storage_bucket": "viocatcher.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043933993150:android:4eebe3ed0a30c493",
+        "android_client_info": {
+          "package_name": "com.example.friendspc.viocatcher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1043933993150-51u7nvnhlr1hq15v1imraajdruum40ct.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.friendspc.viocatcher",
+            "certificate_hash": "91ce94bd054426146e6e0b7609832235bdc2b11d"
+          }
+        },
+        {
+          "client_id": "1043933993150-ok8rfd55q7pgok6f3jo8sret1r5fbmr3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.friendspc.viocatcher",
+            "certificate_hash": "d4eb14046ad819955520b321eda85f516b1cac6f"
+          }
+        },
+        {
+          "client_id": "1043933993150-apk6v0otk6fsn4m1c79pn5q9pftikckj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADYD-wzInBQIPv3UWqqG1fT1A2fKQwIjc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1043933993150-apk6v0otk6fsn4m1c79pn5q9pftikckj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

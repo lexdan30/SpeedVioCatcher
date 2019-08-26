@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/popupkapat"
+        android:title="GO OFFLINE"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/geri"
+        android:title="GO ONLINE"
+        app:showAsAction="always|withText"
+        />
+    <!--android:icon="@drawable/icon_rename"-->
+</menu>
+
+
+
+
+<!--<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context=".MainActivity">
+<item
+    android:id="@+id/action_settings"
+    android:title="Setting"
+    app:showAsAction="never" />
+<item
+    android:id="@+id/new_activity"
+    android:title="Open New Activity"
+    app:showAsAction="always"
+    android:icon="@android:drawable/btn_radio"/>
+
+<item
+    android:id="@+id/action_search"
+    android:title="Search"
+    app:showAsAction="never"
+    android:icon="@android:drawable/ic_menu_search"/>
+
+</menu>-->
+
+<!--<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/close"
+    android:title="Close Connection"/>
+<item android:id="@+id/rate"
+    android:title="Rate the App"/>
+</menu>-->
+

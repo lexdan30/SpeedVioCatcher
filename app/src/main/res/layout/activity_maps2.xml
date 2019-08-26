@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#151516">
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="577dp"
+    tools:context="com.example.bright.trackme.MapsActivity" />
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:text="LexDark Map"
+        android:gravity="center"
+        android:id="@+id/btnAdd"
+        android:textColor="#ffffff"
+        android:background="#26497f"
+        tools:ignore="HardcodedText" />
+</LinearLayout>

@@ -1,0 +1,499 @@
+package com.example.administrator.speedviocatcher;
+
+        import android.app.Activity;
+        import android.app.AlertDialog;
+        import android.app.Dialog;
+        import android.bluetooth.BluetoothAdapter;
+        import android.bluetooth.BluetoothDevice;
+        import android.bluetooth.BluetoothProfile;
+        import android.content.BroadcastReceiver;
+        import android.content.Context;
+        import android.content.DialogInterface;
+        import android.content.Intent;
+        import android.content.IntentFilter;
+        import android.content.SharedPreferences;
+        import android.graphics.Color;
+        import android.location.Location;
+        import android.location.LocationManager;
+        import android.os.Bundle;
+        import android.os.Handler;
+        import android.provider.Settings;
+        import android.support.annotation.Nullable;
+        import android.support.design.widget.Snackbar;
+        import android.support.v4.app.Fragment;
+        import android.util.Log;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.Button;
+        import android.widget.EditText;
+        import android.widget.ImageButton;
+        import android.widget.TextView;
+        import android.widget.Toast;
+
+
+        import com.google.android.gms.common.api.GoogleApiClient;
+
+
+        import com.google.firebase.auth.FirebaseAuth;
+        import com.google.firebase.auth.FirebaseUser;
+        import com.google.firebase.database.DatabaseError;
+        import com.google.firebase.database.DatabaseReference;
+        import com.google.firebase.database.FirebaseDatabase;
+        import com.google.firebase.database.ValueEventListener;
+
+        import java.util.List;
+        import java.util.Set;
+
+        import me.aflak.bluetooth.Bluetooth;
+
+        import static android.R.attr.action;
+        import static android.content.ContentValues.TAG;
+        import static android.content.Context.LOCATION_SERVICE;
+        import static com.example.administrator.speedviocatcher.AppStatus.context;
+
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class MainFragment extends Fragment {
+
+    Button btnuser;
+    ImageButton sync,map;
+    private BluetoothAdapter BA;
+    FirebaseAuth mAuth;
+    TextView digital;
+    TextView stateBluetooth, blueTooth, blueKph;
+    BluetoothAdapter bluetoothAdapter;
+    private static final int REQUEST_ENABLE_BT = 1;
+    //gps
+    private static GoogleApiClient client;
+    private Location mLastLocation;
+    //gps
+    ////==================================================================
+    private String name;
+    private Bluetooth b;
+    private boolean registered=false;
+    //private Bluetooth.CommunicationCallback mCallback;
+
+    /*@SuppressWarnings("deprecation")
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        //mCallback = (Bluetooth.CommunicationCallback) activity;
+        try {
+            mCallback = (Bluetooth.CommunicationCallback) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement Bluetooth.CommunicationCallback");
+        }
+    }*/
+    ////===========================================================https://stackoverflow.com/questions/22536565/call-activitys-methods-from-fragment
+    public MainFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_main, container, false);
+    }
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //you can set the title for your toolbar here for different fragments different titles
+        getActivity().setTitle("SpeedViocatcher");
+        rFIDs();
+
+        stateBluetooth = (TextView)getActivity().findViewById(R.id.stat);
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        ////==================================
+        b = new Bluetooth(getActivity());
+        b.enableBluetooth();
+        b.setCommunicationCallback(mCallback);
+
+        int pos = getActivity().getIntent().getExtras().getInt("pos");
+        name = b.getPairedDevices().get(pos).getName();
+
+        Display("Connecting...");
+        b.connectToDevice(b.getPairedDevices().get(pos));
+
+        IntentFilter filters = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        getActivity().registerReceiver(mReceiver, filters);
+        registered=true;
+        ////==================================
+       /* digital=(TextView)getActivity().findViewById(R.id.digitalView);
+        Typeface mycustom=Typeface.createFromAsset(getActivity().getAssets(),"fonts/DS-DIGIT.TTF");
+        digital.setTypeface(mycustom);*/
+
+        //btnuser=(Button)getActivity().findViewById(R.id.btnAccName);
+        btnuser=(Button)getActivity().findViewById(R.id.btnAccName);
+
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        String uid = user.getUid();
+
+        //uName = new Firebase("https://viocatcher.firebaseio.com/AdminFile/" + uid + "/Username");
+        //Toast.makeText(getActivity(),
+        //       "USER ID IS "+  uid, Toast.LENGTH_LONG).show();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Driver/"+uid).child("Username");
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                String usern = "Welcome, "+dataSnapshot.getValue(String.class);
+                btnuser.setText(usern);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "Failed to read value.", databaseError.toException());
+                Toast.makeText(getActivity(), " "+databaseError.toException().getMessage() , Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+        // Get Location Manager and check for GPS & Network location services
+        LocationManager lm = (LocationManager)getActivity().getSystemService(LOCATION_SERVICE);
+        if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            // Build the alert dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Location Services Not Active");
+            builder.setMessage("Please enable Location Services and GPS");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    // Show location settings when the user acknowledges the alert dialog
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+
+            });
+            Dialog alertDialog = builder.create();
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.show();
+            //CheckBlueToothState();
+        }
+
+
+        Sync();
+        Map();
+        Connect();
+        //String devName=getLocalBluetoothName();
+        //blueTooth.setText(devName);
+
+
+        /*BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+
+        IntentFilter filter = new IntentFilter();
+
+        filter.addAction(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+
+        registerReceiver(mReceiver, filter);
+        adapter.startDiscovery();*/
+
+
+
+
+        /*Display all pairedDevices
+        final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        //List<BluetoothDevice> connectedDevices = proxy.getConnectedDevices();
+        for (BluetoothDevice bt : pairedDevices){
+            Log.e("Paired Devices", bt.getName()+"");
+            blueTooth.setText(bt.getName());
+        }*/
+
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        getActivity().registerReceiver(BTReceiver, filter);
+
+
+
+
+    }
+    //loop
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if bluetooth is on or off
+        CheckBlueToothState();
+    }
+    //======================bluetooth
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(registered) {
+            getActivity().unregisterReceiver(mReceiver);
+            registered=false;
+        }
+    }
+    public void Display(final String s){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                Snackbar snackbar = Snackbar.make( getActivity().findViewById(android.R.id.content), s + "\n", Snackbar.LENGTH_LONG);
+                View sbView = snackbar.getView();
+                TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.YELLOW);
+                snackbar.show();//findViewById(android.R.id.content)
+
+            }
+        });
+    }
+
+    private Bluetooth.CommunicationCallback mCallback = new Bluetooth.CommunicationCallback() {
+
+        @Override
+        public void onConnect(BluetoothDevice device) {
+           // mCallback.onConnect(device);
+
+            Display("Connected to " + device.getName() + " - " + device.getAddress());
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    blueTooth.setText(name);
+                }
+            });
+        }
+
+        @Override
+        public void onDisconnect(BluetoothDevice device, String message) {
+            //mCallback.onDisconnect(device, message);
+            Display("Disconnected!");
+            Display("Connecting again...");
+            b.connectToDevice(device);
+        }
+
+        @Override
+        public void onMessage(final String message) {
+            //mCallback.onMessage(message);
+            Display(name + ": " + message);
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    blueKph.setText(message);
+                }
+            });
+        }
+
+        @Override
+        public void onError(String message) {
+            //mCallback.onError(message);
+            Display("Error: " + message);
+        }
+
+        @Override
+        public void onConnectError(final BluetoothDevice device, String message) {
+           // mCallback.onConnectError(device, message);
+            Display("Error: " + message + ". Trying again in 3 sec...");
+            //Display("Trying again in 3 sec...");
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            b.connectToDevice(device);
+                        }
+                    }, 2000);
+                }
+            });
+        }
+    };
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                Intent intent1 = new Intent(getActivity(), SelectVehicle.class);
+
+                switch (state) {
+                    case BluetoothAdapter.STATE_OFF:
+                        if(registered) {
+                            getActivity().unregisterReceiver(mReceiver);
+                            registered=false;
+                        }
+                        startActivity(intent1);
+                        getActivity().finish();
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_OFF:
+                        if(registered) {
+                            getActivity().unregisterReceiver(mReceiver);
+                            registered=false;
+                        }
+                        startActivity(intent1);
+                        getActivity().finish();
+                        break;
+                }
+            }
+        }
+    };
+
+    //======================bluetooth
+    //Display Connected Device
+    //The BroadcastReceiver that listens for bluetooth broadcasts
+    private final BroadcastReceiver BTReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
+                //Do something if connected
+                Toast.makeText(getActivity(), "BT Connected", Toast.LENGTH_SHORT).show();
+                BluetoothDevice device = intent
+                        .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                blueTooth.setText(device.getName());
+                blueTooth.setTextColor(getResources().getColor(R.color.black));
+            }
+            else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
+                //Do something if disconnected
+                Toast.makeText(getActivity(), "BT Disconnected", Toast.LENGTH_SHORT).show();
+                blueTooth.setText("Please sync vehicle..");
+                blueTooth.setTextColor(getResources().getColor(R.color.red));
+            }
+            //else if...
+            CheckBlueToothState();
+        }
+    };
+
+
+
+    //Display all on and off bluetooth
+
+    private void CheckBlueToothState(){
+        if (bluetoothAdapter == null){
+            stateBluetooth.setText("  Bluetooth NOT support");
+        }else{
+            if (bluetoothAdapter.isEnabled()){
+                if(bluetoothAdapter.isDiscovering()){
+                    stateBluetooth.setText("  Bluetooth is currently in device discovery process.");
+                }else{
+                    stateBluetooth.setText("  Bluetooth is Enabled.");
+                    stateBluetooth.setTextColor(getResources().getColor(R.color.black));
+                }
+            }else{
+                stateBluetooth.setText("  Bluetooth is NOT Enabled!");
+                stateBluetooth.setTextColor(getResources().getColor(R.color.red));
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            }
+        }
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        if(requestCode == REQUEST_ENABLE_BT){
+            CheckBlueToothState();
+        }
+    }
+
+
+
+    public void rFIDs(){
+        sync = (ImageButton)getActivity().findViewById(R.id.btnsync);
+        map = (ImageButton)getActivity().findViewById(R.id.btnmap);
+        blueKph=(TextView) getActivity().findViewById(R.id.digitalView);
+
+
+        blueTooth=(TextView) getActivity().findViewById(R.id.vehicle);
+    }
+
+
+    //intent bluetoothsetting
+    private void Sync() {
+        sync.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                /*Log.i("Log", "in the start searching method");
+                IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+                BluetoothDemo.getActivity().registerReceiver(myReceiver, intentFilter);
+                bluetoothAdapter.startDiscovery();*/
+
+                //btactivity  1.
+                //Intent bluetooth = new Intent(getActivity(), BluetoothActivity.class);
+                //startActivity(bluetooth);
+
+                //on  2.
+                /*if (!BA.isEnabled()) {
+                    Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(turnOn, 0);
+                    Toast.makeText(getActivity(), "Turned on",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "Already on", Toast.LENGTH_LONG).show();
+                }*/
+
+                //3.
+                Intent intentOpenBluetoothSettings = new Intent();
+                intentOpenBluetoothSettings.setAction(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
+                startActivity(intentOpenBluetoothSettings);
+            }
+        });
+    }
+    private void Map() {
+        map.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent mapView = new Intent(getActivity(), MapView.class);
+                startActivity(mapView);
+            }
+        });
+    }
+
+    private void Connect() {
+        blueTooth.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent connectView = new Intent(getActivity(), BluetoothActivity.class);
+                startActivity(connectView);
+            }
+        });
+    }
+
+
+
+    //Display android Bluetooth device name.
+    /**
+     * get bluetooth local device name
+     * @return device name String
+     */
+    public static String getLocalBluetoothName()
+    {
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        // if device does not support Bluetooth
+        if(mBluetoothAdapter==null){
+            Log.d(TAG,"device does not support bluetooth");
+            return null;
+        }
+        return mBluetoothAdapter.getName();
+    }
+    /**
+     * get bluetooth adapter MAC address
+     * @return MAC address String
+     */
+    public static String getBluetoothMacAddress() {
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        // if device does not support Bluetooth
+        if(mBluetoothAdapter==null){
+            Log.d(TAG,"device does not support bluetooth");
+            return null;
+        }
+        return mBluetoothAdapter.getAddress();
+    }
+
+}

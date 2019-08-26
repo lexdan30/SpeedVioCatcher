@@ -1,0 +1,77 @@
+<LinearLayout
+                android:id="@+id/footer_border"
+                android:background="#FF8C00"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_above="@+id/footer"
+                tools:ignore="ObsoleteLayoutParam,Orientation" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:background="#FF8C00"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:elevation="4dp"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/footer"
+                tools:ignore="DisableBaselineAlignment,ObsoleteLayoutParam">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="90dp"
+                    android:layout_weight="0"
+                    android:id="@+id/tab1"
+                    tools:ignore="RtlHardcoded">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:src="@drawable/login_viologo"
+                        android:layout_width="50dp"
+                        app:civ_border_color="#ffffff"
+                        app:civ_border_width="3dp"
+                        android:layout_weight="2"
+                        android:elevation="18dp"
+                        android:id="@+id/profilepic"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/round_image"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="220dp"
+                    android:layout_weight="0"
+                    android:id="@+id/tab0"
+                    tools:ignore="RtlHardcoded">
+
+                    <TextView
+                        android:gravity="left|center_vertical"
+                        android:id="@+id/profilename"
+                        android:layout_weight="1"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:text="Welcome.."
+                        tools:ignore="HardcodedText,SpUsage" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/tab4">
+                    <ImageButton
+                        android:id="@+id/tab4_icon"
+                        android:layout_weight="2"
+                        android:layout_width="50dp"
+                        android:layout_height="0dp"
+                        android:src="@drawable/emails"
+                        android:background="@drawable/round_image"
+                        android:clickable="true"
+                        android:elevation="18dp"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="sans-serif-light"
+                        tools:ignore="ContentDescription,NestedWeights" />
+
+                </LinearLayout>
+            </LinearLayout>

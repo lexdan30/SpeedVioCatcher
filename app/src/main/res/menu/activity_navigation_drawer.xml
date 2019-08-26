@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home7"
+            android:title="Home"
+            tools:ignore="HardcodedText" />
+        <item
+            android:id="@+id/nav_viewdriver"
+            android:icon="@drawable/profile7"
+            android:title="Driver Info"
+            tools:ignore="HardcodedText" />
+    </group>
+    <item android:title="Violation Record">
+        <menu>
+            <!--<item
+                android:id="@+id/nav_local"
+                android:icon="@drawable/update7"
+                android:title="Local Record"/>-->
+            <item
+                android:id="@+id/nav_violation"
+                android:icon="@drawable/ic_ticket"
+                android:title="VioTicket" />
+            <!--<item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_paid"
+                android:title="VioSettlement" />-->
+            <item
+                android:id="@+id/nav_settled"
+                android:icon="@drawable/ic_paid"
+                android:title="VioSettlement" />
+            <item
+                android:id="@+id/nav_selectvehicle"
+                android:icon="@drawable/map7"
+                android:title="About"
+                tools:ignore="HardcodedText" />
+        </menu>
+    </item>
+</menu>

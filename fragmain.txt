@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomtoolbarmain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_content"
+        tools:ignore="UselessParent"
+        android:background="#242F3E"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/counter"
+            android:text="0"
+            android:textColor="#D14524"
+            android:elevation="20dp"
+            android:textStyle="bold"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/notifcounter"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp" />
+        <ImageView
+            android:src="@drawable/drivesafe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp"
+            android:elevation="1dp"
+            android:id="@+id/drivesafe"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_horizontal"
+            tools:ignore="ContentDescription" />
+
+
+        <!-- CONTENT -->
+
+        <LinearLayout
+            android:layout_below="@+id/drivesafe"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#242F3E"
+            android:id="@+id/content"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            tools:ignore="PxUsage,UnknownIdInLayout">
+
+           <!-- speedometer-->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-30dp"
+                android:id="@+id/speedometer"
+                tools:ignore="RtlHardcoded,RtlSymmetry">
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_below="@+id/grdNumbers3"
+                    android:id="@+id/grdNumbers2" >
+
+                    <TableRow tools:ignore="UselessParent"
+                        android:layout_marginTop="10dp">
+                        <TextView
+                            android:layout_width="3dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="30px"
+                            android:gravity="center"
+                            android:text=""
+                            android:layout_marginTop="10dp"
+                            tools:ignore="HardcodedText,PxUsage,RtlHardcoded" />
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="30px"
+                            android:id="@+id/speedText"
+                            android:textColor="#FD5F00"
+                            android:gravity="center"
+                            android:textSize="20dp"
+                            android:text="SPEED"
+                            android:layout_marginTop="10dp"
+                            tools:ignore="HardcodedText,PxUsage" />
+                        <TextView
+                            android:layout_width="190dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="60px"
+                            android:gravity="center"
+                            android:layout_marginTop="10dp"
+                            tools:ignore="HardcodedText,PxUsage" />
+                    </TableRow>
+                    <TableRow tools:ignore="UselessParent"
+                        android:layout_marginTop="-20dp">
+                        <TextView
+                            android:layout_width="3dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="30px"
+                            android:gravity="center"
+                            android:text=""
+                            tools:ignore="HardcodedText,PxUsage,RtlHardcoded" />
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="30px"
+                            android:id="@+id/speedunit"
+                            android:textColor="#FD5F00"
+                            android:gravity="center"
+                            android:textSize="20dp"
+                            android:text="KM/H"
+                            tools:ignore="HardcodedText,PxUsage" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp"
+                            android:layout_marginLeft="-15dp"
+                            android:background="#FF7D5A"/>
+                    </TableRow>
+                    <TableRow tools:ignore="UselessParent"
+                        android:layout_marginTop="-20dp">
+                        <TextView
+                            android:layout_width="3dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="30px"
+                            android:gravity="center"
+                            android:text=""
+                            tools:ignore="HardcodedText,PxUsage,RtlHardcoded" />
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="30px"
+                            android:textColor="#FD5F00"
+                            android:gravity="center"
+                            android:textSize="20dp"
+                            tools:ignore="HardcodedText,PxUsage" />
+                        <TextView
+                            android:layout_width="260dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/digitalView"
+                            android:text="99999"
+                            android:layout_marginLeft="-15dp"
+                            android:background="@drawable/buttonstyle"
+                            android:textColor="#FF8C00"
+                            android:textSize="110dp"
+                            android:elevation="4dp"
+                            android:maxWidth="260dp"
+                            android:maxHeight="120dp"
+                            android:gravity="center"
+                            tools:ignore="HardcodedText,PxUsage" />
+                    </TableRow>
+                    <TableRow tools:ignore="UselessParent"
+                        android:layout_marginTop="20dp">
+                        <TextView
+                            android:layout_width="3dp"
+                            android:layout_marginLeft="0dp"
+                            android:minWidth="30px"
+                            android:gravity="center"
+                            android:text=""
+                            tools:ignore="HardcodedText,PxUsage,RtlHardcoded" />
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="5dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="30px"
+                            android:textColor="#FD5F00"
+                            android:gravity="center"
+                            tools:ignore="HardcodedText,PxUsage" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp"
+                            android:layout_marginLeft="-15dp"
+                            android:background="#FF7D5A"/>
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+            <!--MAXSPEED-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/speedometer"
+                android:id="@+id/speedmax"
+                android:layout_marginTop="-60dp"
+                tools:ignore="ObsoleteLayoutParam">
+                <!--<TextView
+                    android:id="@+id/maxText"
+                    android:text="MAX"
+                    android:textColor="#FF9933"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:background="@drawable/buttonstyle"
+                    android:layout_width="82dp"
+                    android:layout_height="40dp"
+                    tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+                <TextView
+                    android:id="@+id/maxValue"
+                    android:text="40"
+                    android:background="@drawable/buttonstyle"
+                    android:textColor="#FF9933"
+                    android:textSize="150dp"
+                    android:gravity="center"
+                    android:layout_width="210dp"
+                    android:layout_height="wrap_content"
+                    tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+                <TextView
+                    android:id="@+id/maxUnit"
+                    android:text=" KM/H "
+                    android:gravity="center"
+                    android:background="@drawable/buttonstyle"
+                    android:textColor="#FF9933"
+                    android:textSize="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />-->
+                <TableLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_below="@+id/grdNumbers3"
+                    android:id="@+id/grdNumbers3" >
+                    <TableRow tools:ignore="UselessParent"
+                        android:layout_marginTop="10dp">
+                        <TextView
+                            android:layout_width="3dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="30px"
+                            android:gravity="center"
+                            android:text=""
+                            android:layout_marginTop="10dp"
+                            tools:ignore="HardcodedText,PxUsage,RtlHardcoded" />
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="30px"
+                            android:id="@+id/maxText"
+                            android:textColor="#FD5F00"
+                            android:gravity="center"
+                            android:textSize="20dp"
+                            android:text="MAX"
+                            android:layout_marginTop="10dp"
+                            tools:ignore="HardcodedText,PxUsage" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="60px"
+                            android:gravity="center"
+                            android:layout_marginTop="10dp"
+                            tools:ignore="HardcodedText,PxUsage" />
+                    </TableRow>
+                    <TableRow tools:ignore="UselessParent"
+                        android:layout_marginTop="-20dp">
+                        <TextView
+                            android:layout_width="3dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="30px"
+                            android:gravity="center"
+                            android:text=""
+                            tools:ignore="HardcodedText,PxUsage,RtlHardcoded" />
+                        <TextView
+                            android:id="@+id/maxUnit"
+                            android:layout_width="70dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="30px"
+                            android:textColor="#FD5F00"
+                            android:gravity="center"
+                            android:textSize="20dp"
+                            android:text="KM/H"
+                            tools:ignore="HardcodedText,PxUsage" />
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="40dp"
+                            android:minWidth="90dp"
+                            android:gravity="center"
+                            tools:ignore="HardcodedText,PxUsage" />
+                    </TableRow>
+                    <TableRow tools:ignore="UselessParent"
+                        android:layout_marginTop="-20dp">
+                        <TextView
+                            android:layout_width="3dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="30px"
+                            android:gravity="center"
+                            android:text=""
+                            tools:ignore="HardcodedText,PxUsage,RtlHardcoded" />
+                        <TextView
+
+                            android:layout_width="70dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="12dp"
+                            android:minWidth="30px"
+                            android:textColor="#FD5F00"
+                            android:gravity="center"
+                            android:textSize="20dp"
+                            tools:ignore="HardcodedText,PxUsage" />
+
+                        <TextView
+                            android:layout_width="260dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/maxValue"
+                            android:text="40"
+                            android:layout_marginLeft="-15dp"
+                            android:background="@drawable/buttonstyle"
+                            android:textColor="#FD5F00"
+                            android:textSize="110dp"
+                            android:elevation="4dp"
+                            android:maxWidth="200dp"
+                            android:maxHeight="120dp"
+                            android:gravity="center"
+                            tools:ignore="HardcodedText,PxUsage" />
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:elevation="4dp"
+                android:layout_above="@+id/speedadd"
+                android:background="@drawable/shadow"
+                tools:ignore="ObsoleteLayoutParam" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:id="@+id/two"
+                android:background="#242F3E"/>
+
+        </LinearLayout>
+
+            <!-- FOOTER NAVIGATION -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:id="@+id/zero"
+            android:layout_above="@+id/footer_border"
+            android:background="@drawable/shadow"
+            tools:ignore="ObsoleteLayoutParam" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:id="@+id/three"
+            android:background="#242F3E"/>
+
+            <LinearLayout
+                android:id="@+id/footer_border"
+                android:background="#FF7D5A"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_above="@+id/footer"
+                tools:ignore="ObsoleteLayoutParam,Orientation" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:background="#FF7D5A"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:elevation="4dp"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/footer"
+                tools:ignore="DisableBaselineAlignment,ObsoleteLayoutParam">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/tab1"
+                    tools:ignore="RtlHardcoded">
+                    <ImageButton
+                        android:id="@+id/tab1_icon"
+                        android:layout_weight="2"
+                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:background="#FF7D5A"
+                        android:src="@drawable/list_icon"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-light"
+                        tools:targetApi="jelly_bean"
+                        tools:ignore="ContentDescription,NestedWeights" />
+                    <TextView
+                        android:gravity="center"
+                        android:id="@+id/tab1_text"
+                        android:layout_weight="1"
+                        android:textColor="@color/white"
+                        android:textSize="8dp"
+                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:text="ticket"
+                        tools:ignore="HardcodedText,SpUsage" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:background="#FF7D5A"
+                    android:id="@+id/tab2">
+                    <ImageButton
+                        android:id="@+id/tab2_icon"
+                        android:layout_weight="2"
+                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:background="#FF7D5A"
+                        android:src="@drawable/db_icon"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-light"
+                        tools:ignore="ContentDescription,NestedWeights" />
+                    <TextView
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:id="@+id/tab2_text"
+                        android:textColor="@color/white"
+                        android:textSize="8dp"
+                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:text="dbase"
+                        tools:ignore="HardcodedText,SpUsage" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/tab0"
+                    tools:ignore="RtlHardcoded">
+                    <ImageButton
+                        android:id="@+id/btnsync"
+                        android:layout_weight="2"
+                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:background="#FF7D5A"
+                        android:src="@drawable/sync_icon"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-light"
+                        tools:targetApi="jelly_bean"
+                        tools:ignore="ContentDescription,NestedWeights" />
+                    <TextView
+                        android:gravity="center"
+                        android:id="@+id/sync"
+                        android:layout_weight="1"
+                        android:textColor="@color/white"
+                        android:textSize="8dp"
+                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:text="sync"
+                        tools:ignore="HardcodedText,SpUsage" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/tab3">
+                    <ImageButton
+                        android:id="@+id/btnmap"
+                        android:layout_weight="2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="#FF7D5A"
+                        android:src="@drawable/map_icon"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-light"
+                        tools:ignore="ContentDescription,NestedWeights" />
+                    <TextView
+                        android:gravity="center"
+                        android:id="@+id/tab3_text"
+                        android:layout_weight="1"
+                        android:textColor="@color/white"
+                        android:textSize="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:text="map"
+                        tools:ignore="HardcodedText,SpUsage" />
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/tab4">
+                    <ImageButton
+                        android:id="@+id/tab4_icon"
+                        android:layout_weight="2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="#FF7D5A"
+                        android:src="@drawable/notif_icon"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-light"
+                        tools:ignore="ContentDescription,NestedWeights" />
+                    <TextView
+                        android:gravity="center"
+                        android:id="@+id/tab4_text"
+                        android:layout_weight="1"
+                        android:textColor="@color/white"
+                        android:textSize="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:text="notif"
+                        tools:ignore="HardcodedText,SpUsage" />
+                </LinearLayout>
+            </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:id="@+id/speedadd"
+        android:elevation="2dp"
+        android:layout_marginBottom="5dp"
+        android:background="#8000"
+        android:layout_above="@+id/motorlo"
+        tools:ignore="ObsoleteLayoutParam">
+        <TextView
+            android:id="@+id/licenseText"
+            android:text="@string/driverLicense"
+            android:textColor="#FD5F00"
+            android:drawableLeft="@drawable/add"
+            android:layout_marginLeft="20dp"
+            android:textSize="20dp"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+        <TextView
+            android:id="@+id/lis_no"
+            android:text="NULL"
+            android:textColor="#FD5F00"
+            android:layout_marginLeft="20dp"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
+    </LinearLayout>
+
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:elevation="2dp"
+        android:id="@+id/motorlo"
+        android:background="#8000"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="55dp">
+        <!--android:layout_alignParentBottom="true"-->
+        <TextView
+            android:id="@+id/vehicletext"
+            android:text="@string/vehicle"
+            android:textColor="#FD5F00"
+            android:drawableLeft="@drawable/motocon"
+            android:layout_marginLeft="20dp"
+            android:textSize="20dp"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+        <TextView
+            android:id="@+id/vehicle"
+            android:text="..."
+            android:layout_marginLeft="20dp"
+            android:textSize="20dp"
+            android:textColor="#FD5F00"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:text=""
+        android:elevation="2dp"
+        android:typeface="serif"
+        android:textStyle="bold"
+        android:textColor="#2BE973"
+        android:layout_marginRight="10dp"
+        android:textSize="200dp"
+        android:gravity="center"
+        tools:ignore="HardcodedText,RtlHardcoded,SpUsage" />
+</RelativeLayout>
